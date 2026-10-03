@@ -1,0 +1,24 @@
+<%- include('partials/head', { title: 'Edit task' }) %>
+<section class="auth wide-card">
+  <h1>Edit task</h1>
+  <form method="POST" action="/tasks/<%= task._id %>" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="_method" value="PUT">
+    <label>Title <input name="title" value="<%= task.title %>" maxlength="140" required></label>
+    <label>Notes <textarea name="notes" rows="3" maxlength="1000"><%= task.notes %></textarea></label>
+    <div class="row">
+      <label>Priority
+        <select name="priority">
+          <% ['low','medium','high'].forEach(p => { %><option value="<%= p %>" <%= task.priority===p?'selected':'' %>><%= p[0].toUpperCase()+p.slice(1) %></option><% }) %>
+        </select>
+      </label>
+      <label>Category <input name="category" value="<%= task.category %>" maxlength="30"></label>
+      <label>Due date <input type="date" name="dueDate" value="<%= task.dueDate ? task.dueDate.toISOString().slice(0,10) : '' %>"></label>
+    </div>
+    <div class="row">
+      <button class="btn">Save changes</button>
+      <a class="btn ghost" href="/">Cancel</a>
+    </div>
+  </form>
+</section>
+<%- include('partials/foot') %>

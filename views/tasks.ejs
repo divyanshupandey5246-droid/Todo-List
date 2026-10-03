@@ -1,0 +1,83 @@
+<%- include('partials/head', { title: 'Tasks' }) %>
+<% const pct = stats.total ? Math.round(stats.done / stats.total * 100) : 0; %>
+<section class="summary">
+  <div>
+    <h1><%= stats.total - stats.done %> to do</h1>
+    <p class="muted"><%= stats.done %> of <%= stats.total %> done<% if (stats.overdue) { %> · <strong class="late"><%= stats.overdue %> overdue</strong><% } %></p>
+  </div>
+  <div class="bar" role="progressbar" aria-valuenow="<%= pct %>" aria-valuemin="0" aria-valuemax="100"><span style="width:<%= pct %>%"></span></div>
+</section>
+
+<form action="/tasks" method="POST" class="add">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input name="title" placeholder="What needs doing?" maxlength="140" required>
+  <select name="priority" aria-label="Priority">
+    <option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option>
+  </select>
+  <input name="category" placeholder="Category" list="cats" maxlength="30">
+  <input type="date" name="dueDate" aria-label="Due date">
+  <input name="notes" class="wide" placeholder="Notes (optional)" maxlength="1000">
+  <button class="btn">Add task</button>
+</form>
+<datalist id="cats"><% categories.forEach(c => { %><option value="<%= c %>"><% }) %></datalist>
+
+<form method="GET" action="/" class="filters">
+  <input type="search" name="q" value="<%= filters.q %>" placeholder="Search tasks">
+  <select name="status" data-autosubmit>
+    <% ['all','open','done'].forEach(s => { %><option value="<%= s %>" <%= filters.status===s?'selected':'' %>><%= s==='all'?'All tasks':s==='open'?'Open':'Done' %></option><% }) %>
+  </select>
+  <select name="priority" data-autosubmit>
+    <option value="">Any priority</option>
+    <% ['high','medium','low'].forEach(p => { %><option value="<%= p %>" <%= filters.priority===p?'selected':'' %>><%= p[0].toUpperCase()+p.slice(1) %></option><% }) %>
+  </select>
+  <select name="category" data-autosubmit>
+    <option value="">Any category</option>
+    <% categories.forEach(c => { %><option <%= filters.category===c?'selected':'' %>><%= c %></option><% }) %>
+  </select>
+  <select name="sort" data-autosubmit>
+    <% [['smart','Smart order'],['due','Due date'],['priority','Priority'],['newest','Newest']].forEach(([v,l]) => { %><option value="<%= v %>" <%= filters.sort===v?'selected':'' %>><%= l %></option><% }) %>
+  </select>
+  <button class="btn ghost small">Apply</button>
+</form>
+
+<% if (!tasks.length) { %>
+  <p class="empty">Nothing here yet. Add your first task above.</p>
+<% } else { %>
+<ul class="tasks">
+  <% tasks.forEach(t => { const late = !t.done && t.dueDate && t.dueDate < today; %>
+  <li class="task p-<%= t.priority %> <%= t.done ? 'is-done' : '' %>">
+    <form method="POST" action="/tasks/<%= t._id %>">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <input type="hidden" name="_method" value="PATCH">
+      <button class="check" aria-label="<%= t.done ? 'Mark as not done' : 'Mark as done' %>" formaction="/tasks/<%= t._id %>/toggle"></button>
+    </form>
+    <div class="body">
+      <strong><%= t.title %></strong>
+      <% if (t.notes) { %><p><%= t.notes %></p><% } %>
+      <div class="meta">
+        <span class="tag pri"><%= t.priority %></span>
+        <% if (t.category) { %><span class="tag"><%= t.category %></span><% } %>
+        <% if (t.dueDate) { %><span class="tag <%= late ? 'late' : '' %>"><%= late ? 'Overdue: ' : 'Due ' %><%= t.dueDate.toISOString().slice(0,10) %></span><% } %>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn ghost small" href="/tasks/<%= t._id %>/edit">Edit</a>
+      <form method="POST" action="/tasks/<%= t._id %>" data-confirm="Delete this task?">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="_method" value="DELETE">
+        <button class="btn danger small">Delete</button>
+      </form>
+    </div>
+  </li>
+  <% }) %>
+</ul>
+<% } %>
+
+<% if (stats.done) { %>
+<form method="POST" action="/tasks/completed" data-confirm="Delete all completed tasks?" class="clear">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <input type="hidden" name="_method" value="DELETE">
+  <button class="btn ghost small">Clear completed</button>
+</form>
+<% } %>
+<%- include('partials/foot') %>

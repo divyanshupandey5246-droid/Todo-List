@@ -1,0 +1,17 @@
+<%- include('partials/head', { title: 'Enter code' }) %>
+<section class="auth">
+  <h1>Enter your code</h1>
+  <p class="muted">We sent a code to <%= email %>. It expires in <%= minutes %> minutes.</p>
+  <% if (error) { %><p class="flash error"><%= error %></p><% } %>
+  <form method="POST" action="/reset" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>6-digit code
+      <input name="otp" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" class="otp" required autofocus>
+    </label>
+    <label>New password <input type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required></label>
+    <label>Confirm new password <input type="password" name="confirm" minlength="8" maxlength="72" autocomplete="new-password" required></label>
+    <button class="btn">Update password</button>
+  </form>
+  <p class="muted">No code? <a href="/forgot">Request a new one</a></p>
+</section>
+<%- include('partials/foot') %>

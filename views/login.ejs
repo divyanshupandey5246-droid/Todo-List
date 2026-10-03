@@ -1,0 +1,14 @@
+<%- include('partials/head', { title: 'Log in' }) %>
+<section class="auth">
+  <h1>Welcome back</h1>
+  <% if (error) { %><p class="flash error"><%= error %></p><% } %>
+  <form method="POST" action="/login" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Email <input type="email" name="email" value="<%= form.email || '' %>" required autofocus></label>
+    <label>Password <input type="password" name="password" required></label>
+    <button class="btn">Log in</button>
+  </form>
+  <p class="muted"><a href="/forgot">Forgot your password?</a></p>
+  <p class="muted">New here? <a href="/register">Create an account</a></p>
+</section>
+<%- include('partials/foot') %>

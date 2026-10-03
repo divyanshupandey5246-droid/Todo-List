@@ -1,0 +1,13 @@
+<%- include('partials/head', { title: 'Reset password' }) %>
+<section class="auth">
+  <h1>Reset your password</h1>
+  <p class="muted">Enter your email and we'll send a 6-digit code.</p>
+  <% if (error) { %><p class="flash error"><%= error %></p><% } %>
+  <form method="POST" action="/forgot" class="stack">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Email <input type="email" name="email" required autofocus></label>
+    <button class="btn">Send code</button>
+  </form>
+  <p class="muted"><a href="/login">Back to log in</a></p>
+</section>
+<%- include('partials/foot') %>

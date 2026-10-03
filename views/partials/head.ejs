@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= typeof title !== 'undefined' ? title + ' · ' : '' %>Todo Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/main.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="/">Todo Pro</a>
+  <% if (user) { %>
+    <form action="/logout" method="POST" class="inline">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <span class="who"><%= user.name %></span>
+      <button class="btn ghost small">Log out</button>
+    </form>
+  <% } %>
+</header>
+<main>
+<% if (flash) { %><p class="flash <%= flash.type %>" role="status"><%= flash.text %></p><% } %>

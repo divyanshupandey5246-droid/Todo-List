@@ -1,0 +1,63 @@
+:root{
+  --bg:#EDF0E8; --card:#FBFCF8; --ink:#1B2A2F; --muted:#5E6F6B; --line:#D3DACC;
+  --accent:#2F6F5E; --accent-ink:#fff; --danger:#B5412F; --hi:#C2452D; --mid:#C9962B; --lo:#5C8A6E;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#121A1B; --card:#1A2527; --ink:#E6EEE8; --muted:#92A59F; --line:#2B3A3B; --accent:#58B79B; --accent-ink:#0E1A17; --danger:#E0715D; --hi:#E0715D; --mid:#E0B24D; --lo:#7DBA97;}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Figtree,system-ui,sans-serif}
+h1{font:800 clamp(1.8rem,5vw,2.6rem)/1.1 "Bricolage Grotesque",sans-serif;margin:0 0 .25rem;letter-spacing:-.02em}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;max-width:860px;margin:0 auto;padding:1.2rem 1rem}
+.brand{font:800 1.25rem "Bricolage Grotesque",sans-serif;color:var(--ink);text-decoration:none}
+.inline{display:flex;gap:.75rem;align-items:center}.who{color:var(--muted)}
+main{max-width:860px;margin:0 auto;padding:0 1rem 4rem}
+.muted{color:var(--muted)}
+.flash{padding:.7rem 1rem;border-radius:var(--r);border:1px solid var(--line);background:var(--card)}
+.flash.ok{border-color:var(--accent)}.flash.error{border-color:var(--danger);color:var(--danger)}
+
+.btn{display:inline-block;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:.6rem 1.1rem;border-radius:var(--r);font:600 1rem Figtree,sans-serif;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.danger{background:transparent;color:var(--danger);border-color:var(--line)}
+.btn.small{padding:.3rem .7rem;font-size:.9rem}
+
+input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:.55rem .75rem;min-width:0;width:100%}
+label{display:grid;gap:.3rem;font-weight:500}
+
+.auth{max-width:400px;margin:3rem auto}.auth.wide-card{max-width:560px}
+.stack{display:grid;gap:1rem;margin:1.2rem 0}.row{display:flex;gap:.75rem;flex-wrap:wrap}.row label{flex:1;min-width:130px}
+
+.summary{display:grid;gap:.9rem;margin:1rem 0 1.5rem}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent)}
+.late{color:var(--danger)}
+
+.add{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.6rem;padding:1rem;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.add .wide{grid-column:1/4}.add .btn{grid-column:4}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin:1.2rem 0}
+.filters input{flex:1 1 180px;width:auto}.filters select{width:auto}
+
+.tasks{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.task{display:flex;gap:.9rem;align-items:flex-start;padding:.9rem 1rem;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--mid);border-radius:var(--r)}
+.task.p-high{border-left-color:var(--hi)}.task.p-low{border-left-color:var(--lo)}
+.task .body{flex:1;min-width:0}.task p{margin:.2rem 0;color:var(--muted)}
+.task.is-done strong{text-decoration:line-through;color:var(--muted)}
+.check{width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);background:transparent;cursor:pointer;padding:0;margin-top:2px}
+.is-done .check{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 4px var(--card)}
+.meta{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
+.tag{font-size:.8rem;padding:.1rem .55rem;border:1px solid var(--line);border-radius:99px;color:var(--muted)}
+.tag.late{color:var(--danger);border-color:var(--danger)}.tag.pri{text-transform:capitalize}
+.actions{display:flex;gap:.4rem}.actions form{margin:0}
+.empty{text-align:center;color:var(--muted);padding:2.5rem 0}
+.clear{margin-top:1.5rem;text-align:right}
+
+@media(max-width:640px){
+  .add{grid-template-columns:1fr 1fr}.add input:first-of-type,.add .wide,.add .btn{grid-column:1/-1}
+  .task{flex-wrap:wrap}.actions{width:100%;justify-content:flex-end}
+}
+@media(prefers-reduced-motion:no-preference){.btn{transition:filter .15s}}
+.otp{font:600 1.6rem "Bricolage Grotesque",sans-serif;letter-spacing:.5em;text-align:center}
